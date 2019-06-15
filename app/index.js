@@ -4,6 +4,7 @@ var cmd=require('node-cmd');
 const { exec } = require('child_process');
 document.querySelector('#btnEd').addEventListener('click', runSingleCommandWithoutWait);
 document.querySelector('#btnSubmit').addEventListener('click', runTestfunction);
+document.querySelector("#btnreset").addEventListener('click', clearlocalstorage);
 function selectFunction(data){  
     var devices=data.trim().split('\n');
     document.getElementById('selectId').innerHTML='';
@@ -14,7 +15,7 @@ function selectFunction(data){
 } 
 
 function runSingleCommandWithoutWait() {
-    var androidSdkPath = localStorage.getItem('megatron');
+    var androidSdkPath = localStorage.getItem('path');
     if(androidSdkPath == '') {
         alert("Android sdk path is required");
         return;
@@ -33,7 +34,7 @@ function runSingleCommandWithoutWait() {
           });
     }catch(e){
         alert(e);
-        localStorage.removeItem('megatron');
+        localStorage.removeItem('path');
         window.location="first.html";
     }
    }
@@ -43,7 +44,7 @@ function runSingleCommandWithoutWait() {
        let NoofInterrupts=document.getElementById("interrupts").value;
        var SelectedValue=document.getElementById("selectId").value.trim().split(/(\s+)/);
        if(Packagename!='' && NoofInterrupts!='' && SelectedValue!=''){
-        exec(localStorage.getItem('megatron')+' -s '+SelectedValue[0]+' shell monkey -p '+Packagename+' --ignore-crashes --ignore-timeouts --monitor-native-crashes -v '+NoofInterrupts+'', (error, stdout, stderr) => {
+        exec(localStorage.getItem('path')+' -s '+SelectedValue[0]+' shell monkey -p '+Packagename+' --ignore-crashes --ignore-timeouts --monitor-native-crashes -v '+NoofInterrupts+'', (error, stdout, stderr) => {
             if (error) {
               console.error(`exec error: ${error}`);
               alert(error);
@@ -55,5 +56,10 @@ function runSingleCommandWithoutWait() {
        }else{
            alert("Input package name or Number of interrupts or Select device to run!!");
        }
+   }
+
+   function clearlocalstorage() {
+       window.localStorage.clear();
+       alert("Path reset. Please quit the app and relaunch")
    }
 
