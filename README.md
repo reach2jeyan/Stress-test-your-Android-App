@@ -1,8 +1,8 @@
-Stress Test your Android App(Under development)
+
 
 OS Supported
 1. Mac
-2. Windows(BETA)
+2. Windows(Unreleased)
 
 Usage
 1. Download the dmg file and install it on your mac machine

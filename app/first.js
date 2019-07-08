@@ -2,6 +2,10 @@ console.log('first js.js');
 //var cmd     = require('node-command-line'),Promise = require('bluebird');
 var cmd=require('node-cmd');
 const { exec } = require('child_process').exec;
+const path = require('path');
+const os = require('os');
+
+const child_process = require('child_process');
 
 if(localStorage.getItem("path")){ 
     window.location="index.html";
@@ -18,15 +22,19 @@ function navigate(){
 }
 
 function determineOS() {
-    const {app} = require('electron');
     if (process.platform === "win32") {
         alert("We detected you are using windows. Please type 'adb' in your command prompt and copy the value from 'Installed at'")
     }
     else {
-        alert("we are still working on fetching this, please add your ANDROID_HOME path or WHICH ADB path with upto adb")
-        
+        const { app } = require ('electron').remote;
+        const atPath = app.getPath ('desktop');
+        const { spawn } = require ('child_process');
+        let openTerminalAtPath = spawn ('open', [ '-a', 'Terminal', atPath ]);
+        openTerminalAtPath.on ('error', (err) => { console.log (err); });
+
     }
 }
 function deletelocalstorage() {
     window.localStorage.clear();
 }
+
