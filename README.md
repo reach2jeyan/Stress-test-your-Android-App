@@ -1,8 +1,10 @@
+[![Build Status](https://travis-ci.com/reach2jeyan/Stress-test-your-Android-App.svg?branch=master)](https://travis-ci.com/reach2jeyan/Stress-test-your-Android-App)
+
 Stress Test your Android App
 
 OS Supported
 1. Mac
-2. Windows(BETA)
+2. Windows(Unreleased)
 
 Usage
 1. Download the dmg file and install it on your mac machine
