@@ -1,0 +1,22 @@
+osx_image: xcode10.1
+dist: trusty
+sudo: required
+language: node_js
+node_js: 8.12.0
+addons:
+  chrome: stable
+os: windows
+env:
+  global:
+  - ELECTRON_CACHE=$HOME/.cache/electron
+  - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+script:
+- npm run dist
+deploy:
+  provider: releases
+  api_key:
+    secure: Ji2aw6OqEja8APKffdH/KqsnGF1B065fqNi+3wYjAzGnbgvDV34kX43KJld77FuZz+0hI6jQBn2Hz+T0JArS1/pJE0fgU1usiwdg9YJ+WaZizIfwO7n62U5ZGc4XVWS+vs0qwZEz844mZABb3R5F9aiKX5hjsqSGVEjKaydYO4lh4g+uPB+h3fVg/ccXFLnmtJryGnOtPfKVwip4/npqpRGghv3dWKZatxjZpJECqc+p8+CQnoc1RNPNu0wp0JUr0cFzhNTdrTrHQb49a00IdnnIwp04cZO9yCmw4g1o9+yw4EqBQTlC2ZBMItvjnWozpkRblYRDpd2gi19UzShqH6xvoXUHXiA5Do606Of5ydsUGuBq9ZWOrQTvjKIL6gUT7GlwNxxLzkKNK6jxUx1OcfLeraEj+FSlNURIZboCac7PA/tblRJmuTunPOaS7DUro20Zipc/eirm5BUz0eUgaxciejLPim4N8RyOTfcaE1GMB0olAH6/bHJMY55mjWv8mVoRGGJipFSApC7LrWq5vYHAZSc1Q32Rfud6OK7Vu0phku2s8R22GrG0gymL/HnoAaYfJYiqXG1IWXr8WqAgqTsy1+kmkp5tVZbH0S2tOz+yitoCj3VlYMVXpZCCWXHQSv4ejWC5mygr87IGaNZ+FdZT00yK0GB3r1nc7MAErVE=
+  file: dist/passwordscreator Setup 0.0.1.exe
+  on:
+    repo: reach2jeyan/PasswordsCreator
+    branch: master
