@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.com/reach2jeyan/Stress-test-your-Android-App.svg?branch=master)](https://travis-ci.com/reach2jeyan/Stress-test-your-Android-App)
 
-Stress Test your Android App
 
 OS Supported
 1. Mac
@@ -14,7 +12,7 @@ Usage
 Stress test your application is basically built over the android Monkey runner. This will save time for the users who have to keep running or writing commands to run on various multiple devices
 
 Features:
-1. Instantly get the adb path
+1. Instantly get the adb path(Under development)
 2. Instantly get the devices connected 
 3. Choose the application and the device you want to run stress test on
 4. Get the crash reports via crashlytics(if integrated to your application)
