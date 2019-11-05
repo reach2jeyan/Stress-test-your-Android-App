@@ -10,11 +10,11 @@ const child_process = require('child_process');
 if(localStorage.getItem("path")){ 
     window.location="index.html";
 }
-document.querySelector('#btnfirstSubmit').addEventListener('click', navigate);
-document.querySelector('#btnadbinfo').addEventListener('click', determineOS);
+document.querySelector('#validateadbpath').addEventListener('click', navigate);
+document.querySelector('#getadbpath').addEventListener('click', determineOS);
 function navigate(){
-    if(document.getElementById('android_sdk_path').value!=''){
-        localStorage.setItem('path',document.getElementById('android_sdk_path').value)
+    if(document.getElementById('enteradbpath').value!=''){
+        localStorage.setItem('path',document.getElementById('enteradbpath').value)
         window.location='index.html';
     }else{
         alert("You cant proceed without entering this")
@@ -37,4 +37,5 @@ function determineOS() {
 function deletelocalstorage() {
     window.localStorage.clear();
 }
+
 

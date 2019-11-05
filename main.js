@@ -13,7 +13,7 @@ let win; //reference to window
 
 function createWindow(){
     win=new BrowerWindow({fullscreen: false});
-    win.maximize()
+  
     //win.webContents.openDevTools();
     win.loadURL(url.format({
         pathname:path.join(__dirname,'app/first.html'),
