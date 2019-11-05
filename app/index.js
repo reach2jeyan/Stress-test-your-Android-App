@@ -7,10 +7,10 @@ document.querySelector('#btnSubmit').addEventListener('click', runTestfunction);
 document.querySelector("#btnreset").addEventListener('click', clearlocalstorage);
 function selectFunction(data){  
     var devices=data.trim().split('\n');
-    document.getElementById('selectId').innerHTML='';
+    document.getElementById('deviceNames').innerHTML='';
     for(x=1;x<devices.length;x++){
     var option = "<option value='" + devices[x] + "'>" + devices[x] + "</option>";
-    document.getElementById('selectId').innerHTML += option;   
+    document.getElementById('deviceNames').innerHTML += option;   
     } 
 } 
 
@@ -38,11 +38,10 @@ function runSingleCommandWithoutWait() {
         window.location="first.html";
     }
    }
-   //com.deserve.deserve
    function runTestfunction(){
-       let Packagename=document.getElementById("package").value;
-       let NoofInterrupts=document.getElementById("interrupts").value;
-       var SelectedValue=document.getElementById("selectId").value.trim().split(/(\s+)/);
+       let Packagename=document.getElementById("enterpackageName").value;
+       let NoofInterrupts=document.getElementById("enterInterrupts").value;
+       var SelectedValue=document.getElementById("deviceNames").value.trim().split(/(\s+)/);
        if(Packagename!='' && NoofInterrupts!='' && SelectedValue!=''){
         exec(localStorage.getItem('path')+' -s '+SelectedValue[0]+' shell monkey -p '+Packagename+' --ignore-crashes --ignore-timeouts --monitor-native-crashes -v '+NoofInterrupts+'', (error, stdout, stderr) => {
             if (error) {

@@ -1,104 +1,52 @@
+
 <!DOCTYPE html>
+
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Electron app">
-  <meta name="keywords" content="HTML,CSS,XML,JavaScript">
-  <meta name="author" content="Mrityunjeyan">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-<!--===============================================================================================-->
-  <title>Stress test your Android App</title>
-</head>
-<body >
-<div class="contact1" style="background: #ffffff;
-background-color: none;">
-		<div class="container-contact1" style="background: none;
-    background-color: none;">
-			<div class="contact1-pic" data-tilt>
-				<img src="../assets/androidmobile.png" alt="IMG">
-			</div>
+<body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Stress Test Android App</title>
+  </head>
+  <body>
+    
+    <form id="vaidationadbpathofuser" align="left">
+        Test the app with packageName: <input type="text" style="min-width: 230px;" id="enterpackageName" placeholder="com.example.example" align="left"><br><br>
+        With interrupts: <input type="text" style="min-width: 230px;" id="enterInterrupts" placeholder="eg: 1000" align="left"><br><br>
+        In the device:  <select id="deviceNames" onload="selectfunction()" style="min-width: 230px;" align="left"></select> <input type="button", id="btnEd" value="Get Devices"><br><br>
+        I am Done: <input type="button", id="btnSubmit" value="Stress the App" onclick="runTestfunction()">&nbsp;
+        Wait, No!, I entered wrong path: <input type="button", id=btnreset value="Reset Path" onclick="clearlocalstorage()">
+      </input>
 
-			<div class="contact1-form validate-form">
-				<span class="contact1-form-title">
-					Stress test your android app
-        </span>
+        
+    </select>
+      
+        
+    
+    </form><br>
 
-				<div class="wrap-input1 validate-input" data-validate = "Name is required">
-					<input id="package"  class="input1" type="text" name="name" placeholder="Enter package name of application">
-					<span class="shadow-input1"></span>
-				</div>
-        <div style="width: 100%;
-                    display: flex;
-                    margin-bottom: 17px;
-                    color: black;">
-                      
-            <select  id="selectId" onload="selectFunction()" style="padding: 5px;
-            border: none;
-            /* border: 1px solid grey; */
-            width: 200px;
-            height: 38px;
-            background-color: rgb(230, 230, 230);
-            /* background-color: deepskyblue; */
-            /* margin-bottom: 10px; */
-            margin-left: 17px;">     
-                                 
-              </select>
-              <div style="    /* border: 1px solid black; */
-              width: 103px;
-              padding: 8px;
-              /* padding-right: 19px; */
-              margin-left: 28px;
-              cursor: pointer;
-              border-radius: 23px;
-              background-color: rgb(87, 184, 70);
-              color: white;
-              font-size: 14px;
-              font-family: Montserrat-Bold;
-              /* margin-left: 4px; */
-              /* background-color: grey; */"id="btnEd">Get Devices</div> 
-                <br style="clear: left;" />  
-        </div>
-				<div class="wrap-input1 validate-input" data-validate = "Valid email is required:">
-					<input id="interrupts" class="input1" type="text" name="email" placeholder="Number of interrupts">
-					<span class="shadow-input1"></span>
-				</div>
 
-				<div class="container-contact1-form-btn">
-					<button id="btnSubmit"  class="contact1-form-btn">
-						<span>
-							Run test
-							<i class="fa fa-long-arrow-right" ></i>
-            </span>
-            <div class="container-contact1-form-btn">
-              <button id="btnreset"  class="contact1-form-btn">
-                <span>
-                  Reset adb
-                  <i class="fa fa-long-arrow-right" ></i>
-                </span>
-					</button>
-				</div>
-      </div>
-		</div>
-	</div>
-<script src="index.js" /> 
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+      <script src="index.js">
+          
 </script>
-</body>
+      </body>
 </html>
+        
+
+        
+    
+    
+
+    
+
+    
+    
+
+
+    
+
+
+
+
+
+
