@@ -12,7 +12,7 @@ const {Menu} = require('electron')
 let win; //reference to window
 
 function createWindow(){
-    win=new BrowerWindow({fullscreen: false});
+    win=new BrowerWindow({width: 800, height: 250,backgroundColor: '#ECB2A6'});
   
     //win.webContents.openDevTools();
     win.loadURL(url.format({

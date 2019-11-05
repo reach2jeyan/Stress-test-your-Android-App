@@ -1,13 +1,12 @@
 {
   "name": "electronjs",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "pack": "build --dir",
-    "dist": "build",
-    "macbuild": "electron-installer-dmg --out=/Users/sequoiamac2/Desktop/StressTest/build"
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "build": {
     "appId": "com.appstresser.product",
@@ -18,7 +17,8 @@
   "devDependencies": {
     "electron": "^1.8.2",
     "electron-builder": "^20.41.0",
-    "electron-installer-dmg": "^2.0.0"
+    "electron-installer-dmg": "^2.0.0",
+    "electron-installer-windows": "^2.0.0"
   },
   "dependencies": {
     "electron-default-menu": "^1.0.1",
