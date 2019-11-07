@@ -9,7 +9,7 @@ Stress test your application is basically built over the android Monkey runner. 
 
 OS Supported
 1. Mac
-2. Windows(Unreleased)
+2. Windows
 
 Usage
 1. Download the dmg file and install it on your mac machine(You need to allow it from the security settings)
@@ -25,6 +25,5 @@ Contribute?
 I am very short on time for this with my regular work on and I would definetly want to expand this tool to have a lot of features built in with a formal coding practice involved. Free feel to create a branch yourselves and shoot up Pull requests. 
 
 Roadmap:
-1. Support Windows machine
-2. Enable getting path quickly, include crash logs exported to user home if any
-3. Integrate monkey-runner with iOS
+1. Enable getting path quickly, include crash logs exported to user home if any
+2. Integrate monkey-runner with iOS
