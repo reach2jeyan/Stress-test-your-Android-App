@@ -15,7 +15,7 @@
   "author": "Mrityunjeyan Sarvabhouman",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^1.8.2",
+    "electron": "^9.1.0",
     "electron-builder": "^20.41.0",
     "electron-installer-dmg": "^2.0.0",
     "electron-installer-windows": "^2.0.0"
