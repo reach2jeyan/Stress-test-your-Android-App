@@ -2,11 +2,12 @@
 
 const path = require('node:path');
 const { app, BrowserWindow, ipcMain } = require('electron');
-const { findAdb, listDevices, startMonkey } = require('./src/adb');
+const { classifyMonkeyResult, findAdb, getRecentCrashLog, listDevices, startMonkey } = require('./src/adb');
 
 let mainWindow;
 let activeRun;
 let activeAdbPath;
+let stopRequested = false;
 
 function isTrustedSender(event) {
   if (!mainWindow || event.sender !== mainWindow.webContents) return false;
@@ -45,16 +46,29 @@ function registerIpc() {
     if (!activeAdbPath) throw new Error('Detect ADB before starting a test.');
     if (activeRun) throw new Error('A stress test is already running.');
 
+    const output = [];
+    let outputSize = 0;
+    stopRequested = false;
     let finished = false;
-    const finish = (result) => {
+    const finish = async (result) => {
       if (finished) return;
       finished = true;
+      const summary = classifyMonkeyResult(output.join(''), { ...result, stopped: stopRequested });
+      if (summary.outcome === 'crash' || summary.outcome === 'anr') {
+        summary.crashLog = await getRecentCrashLog(activeAdbPath, activeRun.runOptions.device);
+      }
       activeRun = undefined;
-      sendToRenderer('monkey:finished', result);
+      stopRequested = false;
+      sendToRenderer('monkey:finished', { ...result, ...summary });
     };
 
     activeRun = startMonkey(activeAdbPath, options, {
-      onOutput: (stream, text) => sendToRenderer('monkey:output', { stream, text }),
+      onOutput: (stream, text) => {
+        output.push(text);
+        outputSize += text.length;
+        while (outputSize > 2_000_000 && output.length > 1) outputSize -= output.shift().length;
+        sendToRenderer('monkey:output', { stream, text });
+      },
       onError: (error) => finish({ code: null, error: error.message }),
       onClose: ({ code, signal }) => finish({ code, signal }),
     });
@@ -64,6 +78,7 @@ function registerIpc() {
   ipcMain.handle('monkey:stop', async (event) => {
     assertTrustedSender(event);
     if (!activeRun) return { stopped: false };
+    stopRequested = true;
     const stopped = activeRun.kill('SIGTERM');
     return { stopped };
   });

@@ -102,11 +102,53 @@ function validateRunOptions(options) {
   return { device, packageName, events };
 }
 
+function classifyMonkeyResult(output, { code, signal, error, stopped = false } = {}) {
+  const text = String(output || '');
+  if (stopped || signal) {
+    return { outcome: 'stopped', title: 'Test stopped', detail: 'The stress test was stopped before completion.' };
+  }
+  if (error) return { outcome: 'failed', title: 'Test command failed', detail: error };
+
+  const anrMatch = text.match(/(?:ANR in|NOT RESPONDING:\s*)([^\r\n]+)/i);
+  if (anrMatch) {
+    return { outcome: 'anr', title: 'App not responding', detail: anrMatch[0].trim() };
+  }
+
+  const crashMatch = text.match(/(?:CRASH:\s*|Process:\s*)([^\s,\r\n]+)/i);
+  const fatalException = /FATAL EXCEPTION|System appears to have crashed|Monkey aborted due to error/i.test(text);
+  if (crashMatch || fatalException) {
+    const reason = text.match(/(?:Short Msg|Long Msg):\s*([^\r\n]+)/i)?.[1];
+    return {
+      outcome: 'crash',
+      title: 'App crash detected',
+      detail: reason?.trim() || crashMatch?.[0].trim() || 'Monkey stopped after detecting a crash.',
+    };
+  }
+
+  if (code !== 0) {
+    return { outcome: 'failed', title: 'Test command failed', detail: `ADB Monkey exited with code ${code ?? 'unknown'}.` };
+  }
+  return { outcome: 'passed', title: 'No crash detected', detail: 'Monkey completed all requested events without reporting a crash or ANR.' };
+}
+
+async function getRecentCrashLog(adbPath, device) {
+  try {
+    const { stdout, stderr } = await execFileResult(
+      adbPath,
+      ['-s', device, 'logcat', '-b', 'crash', '-d', '-t', '200', '-v', 'threadtime'],
+      { maxBuffer: 2 * 1024 * 1024 },
+    );
+    return (stdout || stderr).trim().slice(-60_000);
+  } catch (error) {
+    return `Crash log unavailable: ${error.stderr?.trim() || error.message}`;
+  }
+}
+
 function startMonkey(adbPath, options, handlers = {}) {
   const run = validateRunOptions(options);
   const args = [
     '-s', run.device, 'shell', 'monkey', '-p', run.packageName,
-    '--ignore-crashes', '--ignore-timeouts', '--monitor-native-crashes', '-v', String(run.events),
+    '--monitor-native-crashes', '-v', String(run.events),
   ];
   const child = spawn(adbPath, args, { shell: false, windowsHide: true });
 
@@ -114,7 +156,17 @@ function startMonkey(adbPath, options, handlers = {}) {
   child.stderr.on('data', (chunk) => handlers.onOutput?.('stderr', chunk.toString()));
   child.once('error', (error) => handlers.onError?.(error));
   child.once('close', (code, signal) => handlers.onClose?.({ code, signal }));
+  child.runOptions = run;
   return child;
 }
 
-module.exports = { adbCandidates, findAdb, listDevices, parseDevices, startMonkey, validateRunOptions };
+module.exports = {
+  adbCandidates,
+  classifyMonkeyResult,
+  findAdb,
+  getRecentCrashLog,
+  listDevices,
+  parseDevices,
+  startMonkey,
+  validateRunOptions,
+};

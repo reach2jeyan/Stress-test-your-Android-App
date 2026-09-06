@@ -13,6 +13,8 @@ AppStresser is a small desktop UI for exercising Android applications with the
 - Validates the application package and event count
 - Runs Monkey without invoking a command shell
 - Streams stdout/stderr and allows an active run to be stopped
+- Stops on the first crash or ANR and displays a clear test result
+- Shows the recent device crash log when a failure is detected
 - Uses a sandboxed, context-isolated Electron renderer with a narrow preload API
 
 ## Prerequisites
@@ -41,8 +43,9 @@ command.
 
 ## Current scope
 
-Milestone 1 displays raw Monkey output. Structured crash/ANR reporting and report
-export belong to Milestone 3.
+AppStresser currently identifies crashes and ANRs reported by Monkey and displays
+recent entries from Android's crash log buffer. Exportable reports and deeper
+stack-trace analysis are not implemented yet.
 
 ## License
 
