@@ -41,6 +41,24 @@ button.danger { color: #ffcbcb; background: #402028; border-color: #783a47; }
 .field-wide { grid-column: 1 / -1; }
 .actions { gap: 10px; margin-top: 20px; }
 .actions .hint { margin-left: 5px; }
+.result { display: flex; gap: 13px; margin-top: 18px; padding: 15px; border: 1px solid; border-radius: 10px; }
+.result[hidden] { display: none; }
+.result-icon { flex: none; display: grid; place-items: center; width: 27px; height: 27px; border-radius: 50%; font-weight: 900; }
+.result-icon::after { content: "!"; }
+.result-copy { min-width: 0; width: 100%; }
+.result h3 { margin: 1px 0 4px; font-size: 15px; }
+.result p { margin: 0; font-size: 13px; line-height: 1.45; }
+.result-passed { color: #8be7b6; background: #102d25; border-color: #27694b; }
+.result-passed .result-icon { color: #102d25; background: #68e0a5; }
+.result-passed .result-icon::after { content: "✓"; }
+.result-crash, .result-anr, .result-failed { color: #ffb2b2; background: #321921; border-color: #7a343e; }
+.result-crash .result-icon, .result-anr .result-icon, .result-failed .result-icon { color: #321921; background: #ff8585; }
+.result-stopped { color: #f6d995; background: #302716; border-color: #735e2b; }
+.result-stopped .result-icon { color: #302716; background: #e8c66f; }
+.result-stopped .result-icon::after { content: "■"; font-size: 11px; }
+details { margin-top: 12px; color: #d5deec; }
+summary { cursor: pointer; font-size: 12px; font-weight: 700; }
+details pre { min-height: 100px; max-height: 240px; margin-top: 10px; color: #f0c4c4; }
 .output-panel { padding-bottom: 18px; }
 pre { min-height: 170px; max-height: 300px; margin: 0; padding: 15px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; color: #bcd0eb; background: #070d17; border: 1px solid #273550; border-radius: 9px; font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 @media (max-width: 700px) {

@@ -12,6 +12,11 @@ const elements = {
   startTest: document.querySelector('#startTest'),
   stopTest: document.querySelector('#stopTest'),
   runStatus: document.querySelector('#runStatus'),
+  result: document.querySelector('#result'),
+  resultTitle: document.querySelector('#resultTitle'),
+  resultDetail: document.querySelector('#resultDetail'),
+  crashDetails: document.querySelector('#crashDetails'),
+  crashLog: document.querySelector('#crashLog'),
   clearOutput: document.querySelector('#clearOutput'),
   output: document.querySelector('#output'),
 };
@@ -38,6 +43,23 @@ function appendOutput(text, stream = 'stdout') {
   const marker = stream === 'stderr' ? '[stderr] ' : '';
   elements.output.textContent += marker + text;
   elements.output.scrollTop = elements.output.scrollHeight;
+}
+
+function clearResult() {
+  elements.result.hidden = true;
+  elements.result.className = 'result';
+  elements.crashDetails.hidden = true;
+  elements.crashDetails.open = false;
+  elements.crashLog.textContent = '';
+}
+
+function showResult({ outcome, title, detail, crashLog }) {
+  elements.result.className = `result result-${outcome}`;
+  elements.resultTitle.textContent = title;
+  elements.resultDetail.textContent = detail;
+  elements.crashDetails.hidden = !crashLog;
+  elements.crashLog.textContent = crashLog || '';
+  elements.result.hidden = false;
 }
 
 async function refreshDevices() {
@@ -87,6 +109,7 @@ async function detectAdb() {
 }
 
 async function startTest() {
+  clearResult();
   elements.output.textContent = '';
   elements.runStatus.textContent = 'Starting…';
   try {
@@ -125,15 +148,10 @@ elements.stopTest.addEventListener('click', stopTest);
 elements.clearOutput.addEventListener('click', () => { elements.output.textContent = ''; });
 
 window.appStresser.onMonkeyOutput(({ stream, text }) => appendOutput(text, stream));
-window.appStresser.onMonkeyFinished(({ code, signal, error }) => {
+window.appStresser.onMonkeyFinished((result) => {
   running = false;
-  if (error) {
-    elements.runStatus.textContent = `Failed: ${error}`;
-  } else if (signal) {
-    elements.runStatus.textContent = `Stopped (${signal})`;
-  } else {
-    elements.runStatus.textContent = code === 0 ? 'Test completed' : `Test exited with code ${code}`;
-  }
+  elements.runStatus.textContent = result.title;
+  showResult(result);
   updateControls();
 });
 
