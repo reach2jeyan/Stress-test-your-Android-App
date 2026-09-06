@@ -1,52 +1,69 @@
-
-<!DOCTYPE html>
-
-<html>
-<body>
+<!doctype html>
+<html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Stress Test Android App</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AppStresser</title>
+    <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
-    
-    <form id="vaidationadbpathofuser" align="left">
-        Test the app with packageName: <input type="text" style="min-width: 230px;" id="enterpackageName" placeholder="com.example.example" align="left"><br><br>
-        With interrupts: <input type="text" style="min-width: 230px;" id="enterInterrupts" placeholder="eg: 1000" align="left"><br><br>
-        In the device:  <select id="deviceNames" onload="selectfunction()" style="min-width: 230px;" align="left"></select> <input type="button", id="btnEd" value="Get Devices"><br><br>
-        I am Done: <input type="button", id="btnSubmit" value="Stress the App" onclick="runTestfunction()">&nbsp;
-        Wait, No!, I entered wrong path: <input type="button", id=btnreset value="Reset Path" onclick="clearlocalstorage()">
-      </input>
+    <main class="shell">
+      <header>
+        <div>
+          <p class="eyebrow">Android Monkey runner</p>
+          <h1>AppStresser <span>v3</span></h1>
+          <p class="subtitle">Connect a device, choose an app, and exercise it with repeatable ADB events.</p>
+        </div>
+        <div id="adbBadge" class="badge badge-waiting">ADB not connected</div>
+      </header>
 
-        
-    </select>
-      
-        
-    
-    </form><br>
+      <section class="panel" aria-labelledby="setupTitle">
+        <div class="section-heading">
+          <div><span class="step">1</span><h2 id="setupTitle">Connect ADB</h2></div>
+          <button id="detectAdb" type="button">Detect ADB</button>
+        </div>
+        <label for="adbPath">Optional ADB executable or platform-tools directory</label>
+        <div class="row">
+          <input id="adbPath" type="text" autocomplete="off" spellcheck="false" placeholder="Auto-detect, or enter /path/to/platform-tools/adb">
+        </div>
+        <p id="adbStatus" class="hint" role="status">Uses ANDROID_SDK_ROOT, ANDROID_HOME, or your PATH.</p>
+      </section>
 
+      <section class="panel" aria-labelledby="testTitle">
+        <div class="section-heading">
+          <div><span class="step">2</span><h2 id="testTitle">Configure test</h2></div>
+          <button id="refreshDevices" class="secondary" type="button" disabled>Refresh devices</button>
+        </div>
+        <div class="form-grid">
+          <div class="field field-wide">
+            <label for="device">Authorized device</label>
+            <select id="device" disabled><option value="">Detect ADB first</option></select>
+          </div>
+          <div class="field">
+            <label for="packageName">Package name</label>
+            <input id="packageName" type="text" autocomplete="off" spellcheck="false" placeholder="com.example.app">
+          </div>
+          <div class="field">
+            <label for="eventCount">Number of events</label>
+            <input id="eventCount" type="number" min="1" max="10000000" step="1" value="1000">
+          </div>
+        </div>
+        <div class="actions">
+          <button id="startTest" class="primary" type="button" disabled>Start stress test</button>
+          <button id="stopTest" class="danger" type="button" disabled>Stop</button>
+          <span id="runStatus" class="hint" role="status"></span>
+        </div>
+      </section>
 
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-      <script src="index.js">
-          
-</script>
-      </body>
+      <section class="panel output-panel" aria-labelledby="outputTitle">
+        <div class="section-heading">
+          <div><span class="step">3</span><h2 id="outputTitle">Live output</h2></div>
+          <button id="clearOutput" class="secondary" type="button">Clear</button>
+        </div>
+        <pre id="output" tabindex="0" aria-live="polite">Ready.</pre>
+      </section>
+    </main>
+    <script src="index.js"></script>
+  </body>
 </html>
-        
-
-        
-    
-    
-
-    
-
-    
-    
-
-
-    
-
-
-
-
-
-
