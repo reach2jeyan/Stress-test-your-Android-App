@@ -34,6 +34,42 @@ pnpm start
 Connect and authorize a device before launching the test. You can verify it from
 a terminal with `adb devices -l`.
 
+## Unsigned prerelease warnings
+
+Current prerelease builds are not code-signed. Only bypass an operating-system
+warning when you downloaded AppStresser from this repository's official GitHub
+Releases page and the filename and version match the release notes. Do not turn
+off SmartScreen, Gatekeeper, antivirus software, or other system-wide security
+protections.
+
+### Windows
+
+Windows SmartScreen may display **Windows protected your PC** because the app
+does not yet have a trusted publisher signature.
+
+1. Confirm the installer came from the official AppStresser GitHub release.
+2. In the SmartScreen window, select **More info**.
+3. Check that the displayed app name is AppStresser, then select **Run anyway**.
+
+If **Run anyway** is unavailable on a managed computer, do not weaken the
+computer's security policy. Ask your administrator or run AppStresser from source.
+
+### macOS
+
+Gatekeeper may report that Apple cannot check AppStresser for malicious software
+or that the developer cannot be verified.
+
+1. Confirm the archive came from the official AppStresser GitHub release.
+2. Move AppStresser to the **Applications** folder.
+3. In Finder, Control-click AppStresser and choose **Open**, then choose **Open**
+   again if macOS offers that option.
+4. If it remains blocked, open **System Settings → Privacy & Security**, find the
+   AppStresser message, choose **Open Anyway**, and authenticate when prompted.
+
+These exceptions apply only to this copy of AppStresser. Do not disable
+Gatekeeper globally or use commands that remove quarantine checks from arbitrary
+downloads.
+
 ## Security model
 
 The renderer has no Node.js access. All privileged work passes through explicit

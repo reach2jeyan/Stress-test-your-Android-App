@@ -1,6 +1,6 @@
 {
   "name": "appstresser",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.0-alpha.2",
   "description": "A secure desktop UI for stress-testing Android apps with ADB Monkey.",
   "main": "main.js",
   "scripts": {
