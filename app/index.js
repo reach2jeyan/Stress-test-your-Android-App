@@ -1,64 +1,141 @@
-console.log('index js.js');
-//var cmd     = require('node-command-line'),Promise = require('bluebird');
-var cmd=require('node-cmd');
-const { exec } = require('child_process');
-document.querySelector('#btnEd').addEventListener('click', runSingleCommandWithoutWait);
-document.querySelector('#btnSubmit').addEventListener('click', runTestfunction);
-document.querySelector("#btnreset").addEventListener('click', clearlocalstorage);
-function selectFunction(data){  
-    var devices=data.trim().split('\n');
-    document.getElementById('deviceNames').innerHTML='';
-    for(x=1;x<devices.length;x++){
-    var option = "<option value='" + devices[x] + "'>" + devices[x] + "</option>";
-    document.getElementById('deviceNames').innerHTML += option;   
-    } 
-} 
+'use strict';
 
-function runSingleCommandWithoutWait() {
-    var androidSdkPath = localStorage.getItem('path');
-    if(androidSdkPath == '') {
-        alert("Android sdk path is required");
-        return;
+const elements = {
+  adbBadge: document.querySelector('#adbBadge'),
+  adbPath: document.querySelector('#adbPath'),
+  adbStatus: document.querySelector('#adbStatus'),
+  detectAdb: document.querySelector('#detectAdb'),
+  refreshDevices: document.querySelector('#refreshDevices'),
+  device: document.querySelector('#device'),
+  packageName: document.querySelector('#packageName'),
+  eventCount: document.querySelector('#eventCount'),
+  startTest: document.querySelector('#startTest'),
+  stopTest: document.querySelector('#stopTest'),
+  runStatus: document.querySelector('#runStatus'),
+  clearOutput: document.querySelector('#clearOutput'),
+  output: document.querySelector('#output'),
+};
+
+let adbReady = false;
+let running = false;
+
+function errorMessage(error) {
+  return error?.message || String(error);
+}
+
+function updateControls() {
+  elements.detectAdb.disabled = running;
+  elements.refreshDevices.disabled = !adbReady || running;
+  elements.device.disabled = !adbReady || running;
+  elements.packageName.disabled = running;
+  elements.eventCount.disabled = running;
+  elements.startTest.disabled = !adbReady || running || !elements.device.value;
+  elements.stopTest.disabled = !running;
+}
+
+function appendOutput(text, stream = 'stdout') {
+  if (elements.output.textContent === 'Ready.') elements.output.textContent = '';
+  const marker = stream === 'stderr' ? '[stderr] ' : '';
+  elements.output.textContent += marker + text;
+  elements.output.scrollTop = elements.output.scrollHeight;
+}
+
+async function refreshDevices() {
+  elements.refreshDevices.disabled = true;
+  elements.device.replaceChildren(new Option('Looking for devices…', ''));
+  try {
+    const devices = await window.appStresser.listDevices();
+    const authorized = devices.filter((device) => device.state === 'device');
+    const options = [];
+    if (!authorized.length) options.push(new Option('No authorized devices found', ''));
+    for (const device of authorized) {
+      const model = device.details.match(/(?:^|\s)model:([^\s]+)/)?.[1]?.replaceAll('_', ' ');
+      options.push(new Option(model ? `${model} — ${device.serial}` : device.serial, device.serial));
     }
-    var command = androidSdkPath +" devices";
-    try{
-        exec(androidSdkPath+' devices', (error, stdout, stderr) => {
-            if (error) {
-              console.error(`exec error: ${error}`);
-              alert(error);
-              return;
-            }else{
-                console.log(`stdout: ${stdout}`);
-                selectFunction(stdout);
-            }
-          });
-    }catch(e){
-        alert(e);
-        localStorage.removeItem('path');
-        window.location="first.html";
-    }
-   }
-   function runTestfunction(){
-       let Packagename=document.getElementById("enterpackageName").value;
-       let NoofInterrupts=document.getElementById("enterInterrupts").value;
-       var SelectedValue=document.getElementById("deviceNames").value.trim().split(/(\s+)/);
-       if(Packagename!='' && NoofInterrupts!='' && SelectedValue!=''){
-        exec(localStorage.getItem('path')+' -s '+SelectedValue[0]+' shell monkey -p '+Packagename+' --ignore-crashes --ignore-timeouts --monitor-native-crashes -v '+NoofInterrupts+'', (error, stdout, stderr) => {
-            if (error) {
-              console.error(`exec error: ${error}`);
-              alert(error);
-            }else{
-                console.log(`stdout: ${stdout}`);
-                alert("Test Complete. Crash if any notified via crashlytics")
-            }
-          });
-       }else{
-           alert("Input package name or Number of interrupts or Select device to run!!");
-       }
-   }
+    elements.device.replaceChildren(...options);
 
-   function clearlocalstorage() {
-       window.localStorage.clear();
-       alert("Path reset. Please quit the app and relaunch")
-   }
+    const unavailable = devices.filter((device) => device.state !== 'device');
+    elements.runStatus.textContent = unavailable.length
+      ? `${unavailable.length} offline or unauthorized device${unavailable.length === 1 ? '' : 's'} hidden.`
+      : '';
+  } catch (error) {
+    elements.device.replaceChildren(new Option('Unable to list devices', ''));
+    elements.runStatus.textContent = errorMessage(error);
+  } finally {
+    updateControls();
+  }
+}
 
+async function detectAdb() {
+  elements.detectAdb.disabled = true;
+  elements.adbStatus.textContent = 'Detecting ADB…';
+  try {
+    const adb = await window.appStresser.detectAdb(elements.adbPath.value);
+    adbReady = true;
+    elements.adbBadge.textContent = 'ADB connected';
+    elements.adbBadge.className = 'badge badge-ready';
+    elements.adbStatus.textContent = `${adb.version} • ${adb.path}`;
+    await refreshDevices();
+  } catch (error) {
+    adbReady = false;
+    elements.adbBadge.textContent = 'ADB unavailable';
+    elements.adbBadge.className = 'badge badge-error';
+    elements.adbStatus.textContent = errorMessage(error);
+  } finally {
+    updateControls();
+  }
+}
+
+async function startTest() {
+  elements.output.textContent = '';
+  elements.runStatus.textContent = 'Starting…';
+  try {
+    await window.appStresser.startMonkey({
+      device: elements.device.value,
+      packageName: elements.packageName.value,
+      events: elements.eventCount.value,
+    });
+    running = true;
+    elements.runStatus.textContent = 'Test running';
+    appendOutput(`Starting Monkey on ${elements.device.value}\n`);
+  } catch (error) {
+    elements.runStatus.textContent = errorMessage(error);
+  } finally {
+    updateControls();
+  }
+}
+
+async function stopTest() {
+  elements.stopTest.disabled = true;
+  elements.runStatus.textContent = 'Stopping…';
+  try {
+    const result = await window.appStresser.stopMonkey();
+    if (!result.stopped) elements.runStatus.textContent = 'No test is running.';
+  } catch (error) {
+    elements.runStatus.textContent = errorMessage(error);
+    updateControls();
+  }
+}
+
+elements.detectAdb.addEventListener('click', detectAdb);
+elements.refreshDevices.addEventListener('click', refreshDevices);
+elements.device.addEventListener('change', updateControls);
+elements.startTest.addEventListener('click', startTest);
+elements.stopTest.addEventListener('click', stopTest);
+elements.clearOutput.addEventListener('click', () => { elements.output.textContent = ''; });
+
+window.appStresser.onMonkeyOutput(({ stream, text }) => appendOutput(text, stream));
+window.appStresser.onMonkeyFinished(({ code, signal, error }) => {
+  running = false;
+  if (error) {
+    elements.runStatus.textContent = `Failed: ${error}`;
+  } else if (signal) {
+    elements.runStatus.textContent = `Stopped (${signal})`;
+  } else {
+    elements.runStatus.textContent = code === 0 ? 'Test completed' : `Test exited with code ${code}`;
+  }
+  updateControls();
+});
+
+updateControls();
+detectAdb();

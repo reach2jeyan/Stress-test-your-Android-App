@@ -1,33 +1,39 @@
 {
-  "name": "electronjs",
-  "version": "2.0.0",
-  "description": "",
+  "name": "appstresser",
+  "version": "3.0.0-alpha.1",
+  "description": "A secure desktop UI for stress-testing Android apps with ADB Monkey.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "test": "node --test",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
-  "build": {
-    "appId": "com.appstresser.product",
-    "productName": "AppStresser"
-  },
   "author": "Mrityunjeyan Sarvabhouman",
   "license": "MIT",
-  "devDependencies": {
-    "electron": "^9.1.0",
-    "electron-builder": "^20.41.0",
-    "electron-installer-dmg": "^2.0.0",
-    "electron-installer-windows": "^2.0.0"
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=22"
   },
-  "dependencies": {
-    "electron-default-menu": "^1.0.1",
-    "fix-path": "^2.1.0",
-    "fs-jetpack": "^1.3.0",
-    "node-adb": "^0.1.6",
-    "node-cmd": "^3.0.0",
-    "node-command-line": "^1.0.2",
-    "shell-path": "^2.1.0",
-    "user-home": "^2.0.0"
+  "devDependencies": {
+    "electron": "44.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.appstresser.product",
+    "productName": "AppStresser",
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "app/index.html",
+      "app/index.js",
+      "app/css/main.css",
+      "assets/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    }
   }
 }
