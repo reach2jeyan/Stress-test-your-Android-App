@@ -66,9 +66,33 @@ or that the developer cannot be verified.
 4. If it remains blocked, open **System Settings → Privacy & Security**, find the
    AppStresser message, choose **Open Anyway**, and authenticate when prompted.
 
-These exceptions apply only to this copy of AppStresser. Do not disable
-Gatekeeper globally or use commands that remove quarantine checks from arbitrary
-downloads.
+Some unsigned builds may instead produce an **AppStresser is damaged and can't be
+opened** dialog with only a **Move to Bin** option. If—and only if—you downloaded
+that copy from this repository's official GitHub Releases page, remove the
+quarantine attribute from AppStresser specifically:
+
+```sh
+xattr -dr com.apple.quarantine "/Applications/AppStresser.app"
+open "/Applications/AppStresser.app"
+```
+
+This does not disable Gatekeeper globally; it removes quarantine from only the
+specified AppStresser bundle. Never run the command against an app from an
+untrusted source, and never replace the app path with a broad directory.
+
+If you prefer not to bypass the warning, run AppStresser from source after
+installing Node.js 22 or newer and pnpm:
+
+```sh
+git clone https://github.com/reach2jeyan/Stress-test-your-Android-App.git
+cd Stress-test-your-Android-App
+pnpm install
+pnpm start
+```
+
+These extra steps are necessary because the current prereleases are not signed
+with an Apple Developer ID certificate or notarized by Apple. A future signed and
+notarized release will support the normal double-click installation experience.
 
 ## Security model
 
