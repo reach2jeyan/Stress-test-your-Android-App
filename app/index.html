@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AppStresser</title>
+    <title>CrashScout by ReporterPlus</title>
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
     <main class="shell">
       <header>
         <div>
-          <p class="eyebrow">Android Monkey runner</p>
-          <h1>AppStresser <span>v3</span></h1>
-          <p class="subtitle">Connect a device, choose an app, and exercise it with repeatable ADB events.</p>
+          <p class="eyebrow">Local Android crash discovery</p>
+          <h1>CrashScout <span>by ReporterPlus</span></h1>
+          <p class="subtitle">Explore your app with repeatable ADB events and catch failures before your users do.</p>
         </div>
         <div id="adbBadge" class="badge badge-waiting">ADB not connected</div>
       </header>
@@ -74,6 +74,12 @@
         </div>
         <pre id="output" tabindex="0" aria-live="polite">Ready.</pre>
       </section>
+
+      <footer>
+        <span>Powered by Android Monkey</span>
+        <span aria-hidden="true">·</span>
+        <span>Built by ReporterPlus</span>
+      </footer>
     </main>
     <script src="index.js"></script>
   </body>

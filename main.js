@@ -9,6 +9,8 @@ let activeRun;
 let activeAdbPath;
 let stopRequested = false;
 
+app.setAppUserModelId('com.reporterplus.crashscout');
+
 function isTrustedSender(event) {
   if (!mainWindow || event.sender !== mainWindow.webContents) return false;
   try {

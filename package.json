@@ -1,7 +1,8 @@
 {
-  "name": "appstresser",
-  "version": "3.0.0-alpha.2",
-  "description": "A secure desktop UI for stress-testing Android apps with ADB Monkey.",
+  "name": "crashscout",
+  "private": true,
+  "version": "3.0.0-alpha.3",
+  "description": "Local, scriptless Android crash discovery by ReporterPlus.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -9,7 +10,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
-  "author": "Mrityunjeyan Sarvabhouman",
+  "author": "ReporterPlus",
   "license": "MIT",
   "packageManager": "pnpm@11.19.0",
   "engines": {
@@ -20,8 +21,8 @@
     "electron-builder": "^26.0.12"
   },
   "build": {
-    "appId": "com.appstresser.product",
-    "productName": "AppStresser",
+    "appId": "com.reporterplus.crashscout",
+    "productName": "CrashScout",
     "files": [
       "main.js",
       "preload.js",

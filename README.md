@@ -1,11 +1,33 @@
-# AppStresser v3
+# CrashScout
 
-AppStresser is a small desktop UI for exercising Android applications with the
+**Local, scriptless Android crash discovery by ReporterPlus.**
+
+CrashScout explores Android applications with repeatable events, detects crashes
+and ANRs, and surfaces useful device logs. Its first execution engine is the
 [ADB Monkey](https://developer.android.com/studio/test/other-testing-tools/monkey) tool.
 
-> v3 is under active development. Milestone 1 provides the secure execution core.
+> CrashScout is the next generation of AppStresser, originally created by
+> Mrityunjeyan Sarvabhouman in 2019. The current release is an experimental alpha.
 
-## Milestone 1 features
+**Powered by Android Monkey · Built by ReporterPlus**
+
+## macOS: open the downloaded app
+
+The current macOS prerelease is not signed or notarized. After downloading it
+from this repository's official GitHub Releases page, move **CrashScout.app** to
+your **Applications** folder and run:
+
+```sh
+xattr -dr com.apple.quarantine "/Applications/CrashScout.app"
+open "/Applications/CrashScout.app"
+```
+
+Only use this command for a copy downloaded from the official release. It removes
+quarantine from CrashScout only; it does not disable Gatekeeper globally. See
+[Unsigned prerelease warnings](#unsigned-prerelease-warnings) for alternatives
+and Windows instructions.
+
+## Current alpha features
 
 - Detects ADB from `ANDROID_SDK_ROOT`, `ANDROID_HOME`, or `PATH`
 - Accepts an optional explicit ADB executable or `platform-tools` directory
@@ -37,7 +59,7 @@ a terminal with `adb devices -l`.
 ## Unsigned prerelease warnings
 
 Current prerelease builds are not code-signed. Only bypass an operating-system
-warning when you downloaded AppStresser from this repository's official GitHub
+warning when you downloaded CrashScout from this repository's official GitHub
 Releases page and the filename and version match the release notes. Do not turn
 off SmartScreen, Gatekeeper, antivirus software, or other system-wide security
 protections.
@@ -47,40 +69,40 @@ protections.
 Windows SmartScreen may display **Windows protected your PC** because the app
 does not yet have a trusted publisher signature.
 
-1. Confirm the installer came from the official AppStresser GitHub release.
+1. Confirm the installer came from the official CrashScout GitHub release.
 2. In the SmartScreen window, select **More info**.
-3. Check that the displayed app name is AppStresser, then select **Run anyway**.
+3. Check that the displayed app name is CrashScout, then select **Run anyway**.
 
 If **Run anyway** is unavailable on a managed computer, do not weaken the
-computer's security policy. Ask your administrator or run AppStresser from source.
+computer's security policy. Ask your administrator or run CrashScout from source.
 
 ### macOS
 
-Gatekeeper may report that Apple cannot check AppStresser for malicious software
+Gatekeeper may report that Apple cannot check CrashScout for malicious software
 or that the developer cannot be verified.
 
-1. Confirm the archive came from the official AppStresser GitHub release.
-2. Move AppStresser to the **Applications** folder.
-3. In Finder, Control-click AppStresser and choose **Open**, then choose **Open**
+1. Confirm the archive came from the official CrashScout GitHub release.
+2. Move CrashScout to the **Applications** folder.
+3. In Finder, Control-click CrashScout and choose **Open**, then choose **Open**
    again if macOS offers that option.
 4. If it remains blocked, open **System Settings → Privacy & Security**, find the
-   AppStresser message, choose **Open Anyway**, and authenticate when prompted.
+   CrashScout message, choose **Open Anyway**, and authenticate when prompted.
 
-Some unsigned builds may instead produce an **AppStresser is damaged and can't be
+Some unsigned builds may instead produce a **CrashScout is damaged and can't be
 opened** dialog with only a **Move to Bin** option. If—and only if—you downloaded
 that copy from this repository's official GitHub Releases page, remove the
-quarantine attribute from AppStresser specifically:
+quarantine attribute from CrashScout specifically:
 
 ```sh
-xattr -dr com.apple.quarantine "/Applications/AppStresser.app"
-open "/Applications/AppStresser.app"
+xattr -dr com.apple.quarantine "/Applications/CrashScout.app"
+open "/Applications/CrashScout.app"
 ```
 
 This does not disable Gatekeeper globally; it removes quarantine from only the
-specified AppStresser bundle. Never run the command against an app from an
+specified CrashScout bundle. Never run the command against an app from an
 untrusted source, and never replace the app path with a broad directory.
 
-If you prefer not to bypass the warning, run AppStresser from source after
+If you prefer not to bypass the warning, run CrashScout from source after
 installing Node.js 22 or newer and pnpm:
 
 ```sh
@@ -101,9 +123,15 @@ IPC handlers in the Electron main process. ADB is launched with `spawn()` and an
 argument array (`shell: false`); UI values are never concatenated into a shell
 command.
 
+## Technology attribution
+
+CrashScout currently uses Android Monkey as its test-execution engine. CrashScout
+is an independent ReporterPlus project and is not affiliated with or endorsed by
+Google. Android is a trademark of Google LLC.
+
 ## Current scope
 
-AppStresser currently identifies crashes and ANRs reported by Monkey and displays
+CrashScout currently identifies crashes and ANRs reported by Monkey and displays
 recent entries from Android's crash log buffer. Exportable reports and deeper
 stack-trace analysis are not implemented yet.
 
