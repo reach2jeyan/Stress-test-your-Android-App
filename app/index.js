@@ -66,7 +66,7 @@ async function refreshDevices() {
   elements.refreshDevices.disabled = true;
   elements.device.replaceChildren(new Option('Looking for devices…', ''));
   try {
-    const devices = await window.appStresser.listDevices();
+    const devices = await window.crashScout.listDevices();
     const authorized = devices.filter((device) => device.state === 'device');
     const options = [];
     if (!authorized.length) options.push(new Option('No authorized devices found', ''));
@@ -92,7 +92,7 @@ async function detectAdb() {
   elements.detectAdb.disabled = true;
   elements.adbStatus.textContent = 'Detecting ADB…';
   try {
-    const adb = await window.appStresser.detectAdb(elements.adbPath.value);
+    const adb = await window.crashScout.detectAdb(elements.adbPath.value);
     adbReady = true;
     elements.adbBadge.textContent = 'ADB connected';
     elements.adbBadge.className = 'badge badge-ready';
@@ -113,7 +113,7 @@ async function startTest() {
   elements.output.textContent = '';
   elements.runStatus.textContent = 'Starting…';
   try {
-    await window.appStresser.startMonkey({
+    await window.crashScout.startMonkey({
       device: elements.device.value,
       packageName: elements.packageName.value,
       events: elements.eventCount.value,
@@ -132,7 +132,7 @@ async function stopTest() {
   elements.stopTest.disabled = true;
   elements.runStatus.textContent = 'Stopping…';
   try {
-    const result = await window.appStresser.stopMonkey();
+    const result = await window.crashScout.stopMonkey();
     if (!result.stopped) elements.runStatus.textContent = 'No test is running.';
   } catch (error) {
     elements.runStatus.textContent = errorMessage(error);
@@ -147,8 +147,8 @@ elements.startTest.addEventListener('click', startTest);
 elements.stopTest.addEventListener('click', stopTest);
 elements.clearOutput.addEventListener('click', () => { elements.output.textContent = ''; });
 
-window.appStresser.onMonkeyOutput(({ stream, text }) => appendOutput(text, stream));
-window.appStresser.onMonkeyFinished((result) => {
+window.crashScout.onMonkeyOutput(({ stream, text }) => appendOutput(text, stream));
+window.crashScout.onMonkeyFinished((result) => {
   running = false;
   elements.runStatus.textContent = result.title;
   showResult(result);

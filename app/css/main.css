@@ -61,6 +61,7 @@ summary { cursor: pointer; font-size: 12px; font-weight: 700; }
 details pre { min-height: 100px; max-height: 240px; margin-top: 10px; color: #f0c4c4; }
 .output-panel { padding-bottom: 18px; }
 pre { min-height: 170px; max-height: 300px; margin: 0; padding: 15px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; color: #bcd0eb; background: #070d17; border: 1px solid #273550; border-radius: 9px; font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+footer { display: flex; justify-content: center; gap: 8px; margin-top: 22px; color: #718199; font-size: 11px; letter-spacing: .02em; }
 @media (max-width: 700px) {
   .shell { width: min(100% - 24px, 880px); padding-top: 24px; }
   header { flex-direction: column; gap: 14px; }

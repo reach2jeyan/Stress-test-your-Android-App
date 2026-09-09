@@ -9,7 +9,7 @@ function subscribe(channel, callback) {
   return () => ipcRenderer.removeListener(channel, listener);
 }
 
-contextBridge.exposeInMainWorld('appStresser', Object.freeze({
+contextBridge.exposeInMainWorld('crashScout', Object.freeze({
   detectAdb: (override) => ipcRenderer.invoke('adb:detect', override),
   listDevices: () => ipcRenderer.invoke('adb:devices'),
   startMonkey: (options) => ipcRenderer.invoke('monkey:start', options),
